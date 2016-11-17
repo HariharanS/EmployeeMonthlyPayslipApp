@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1510E9B-7A44-4D41-ACA3-95689DABE307}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{B34815D7-9E11-4F86-A635-C6B1A816C871}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EmployeeMonthlyPayslipApp</RootNamespace>
-    <AssemblyName>EmployeeMonthlyPayslipApp</AssemblyName>
+    <RootNamespace>EmployeeMonthlyPayslipInterfaces</RootNamespace>
+    <AssemblyName>EmployeeMonthlyPayslipInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,18 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net45\CsvHelper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,24 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\TaxStructure\Tax.cs" />
-    <Compile Include="Models\TaxStructure\TaxRate.cs" />
-    <Compile Include="Models\TaxStructure\TaxSlab.cs" />
-    <Compile Include="Models\TaxStructure\TaxSturcture.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="IEmployeeDetails.cs" />
+    <Compile Include="IPaySlipDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxStructure\ITax.cs" />
+    <Compile Include="TaxStructure\ITaxRate.cs" />
+    <Compile Include="TaxStructure\ITaxSlab.cs" />
+    <Compile Include="TaxStructure\ITaxStructure.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="TaxRate.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeeMonthlyPayslipInterfaces.csproj">
-      <Project>{B34815D7-9E11-4F86-A635-C6B1A816C871}</Project>
-      <Name>EmployeeMonthlyPayslipInterfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
