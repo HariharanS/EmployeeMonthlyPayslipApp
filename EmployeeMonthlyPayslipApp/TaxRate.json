@@ -31,7 +31,7 @@
           }
         },
         {
-          "minIncome": 80001.00,
+          "minIncome": 180001.00,
           "tax": {
             "additionalTaxPercentageOverMinIncome": 0.45,
             "flatTax" :  54547.00 
