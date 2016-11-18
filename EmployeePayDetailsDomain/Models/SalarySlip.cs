@@ -1,10 +1,11 @@
 ﻿using EmployeeMonthlyPayslipInterfaces.TaxStructure;
 using System;
 using System.Linq;
+using EmployeeMonthlyPayslipInterfaces.Domain;
 
 namespace EmployeePayDetailsDomain.Models
 {
-    public class SalarySlip
+    public class SalarySlip : ISalarySlip
     {
         private readonly Salary _salary;
         private readonly ITaxStructure _taxStructure;

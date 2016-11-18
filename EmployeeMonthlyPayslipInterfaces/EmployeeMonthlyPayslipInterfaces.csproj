@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\IEmployee.cs" />
+    <Compile Include="Domain\IPerson.cs" />
+    <Compile Include="Domain\ISalary.cs" />
+    <Compile Include="Domain\ISalarySlip.cs" />
     <Compile Include="IEmployeeDetails.cs" />
     <Compile Include="IPaySlipDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
