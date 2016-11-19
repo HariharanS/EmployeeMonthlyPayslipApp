@@ -37,8 +37,16 @@
       <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net45\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentCommandLineParser, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentCommandLineParser.1.4.3\lib\net35\FluentCommandLineParser.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -55,10 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\EmployeeDetails.cs" />
+    <Compile Include="Models\PaySlipDetails.cs" />
     <Compile Include="Models\TaxStructure\Tax.cs" />
     <Compile Include="Models\TaxStructure\TaxRate.cs" />
     <Compile Include="Models\TaxStructure\TaxSlab.cs" />
     <Compile Include="Models\TaxStructure\TaxSturcture.cs" />
+    <Compile Include="ObjectMaps\MapConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,11 +79,12 @@
     <None Include="TaxRate.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeeMonthlyPayslipInterfaces.csproj">
+    <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeePayDetailsCommon.csproj">
       <Project>{B34815D7-9E11-4F86-A635-C6B1A816C871}</Project>
-      <Name>EmployeeMonthlyPayslipInterfaces</Name>
+      <Name>EmployeePayDetailsCommon</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
