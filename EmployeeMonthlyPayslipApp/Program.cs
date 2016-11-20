@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
+using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
 using EmployeeMonthlyPayslipInterfaces;
 using Fclp;
 using EmployeeMonthlyPayslipApp.Models.Models;
 using EmployeeMonthlyPayslipInterfaces.TypeMaps;
+using EmployeePayDetailsCommon.TypeMaps;
+using Newtonsoft.Json;
 
 namespace EmployeeMonthlyPayslipApp
 {
@@ -48,15 +53,33 @@ namespace EmployeeMonthlyPayslipApp
         private static object RunApplication(EmployeeDetailsInput employeeDetailsInput)
         {
             var mapper = InitializeTypeMapper();
+            
             var employeeDetails = mapper.Map<EmployeeDetailsInput, IEmployeeDetails>(employeeDetailsInput);
+            var taxStructure = GetTaxStructure();
+            var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(employeeDetails,mapper);
+            var paySlip = employeePayDetailsService.GetPaySlip(taxStructure);
+
+            Console.WriteLine(JsonConvert.SerializeObject(paySlip));
             return null;
+        }
+
+        private static ITaxStructure GetTaxStructure()
+        {
+            var path = Assembly.GetExecutingAssembly().Location;
+
+            var taxJsonFilePath = Path.Combine(path, "TaxRate.json");
+            string fileContent = null;
+            using (var reader = new StreamReader(taxJsonFilePath))
+            {
+                fileContent = reader.ReadToEnd().Trim();
+            }
+            var taxStructure = JsonConvert.DeserializeObject<ITaxStructure>(fileContent);
+            return taxStructure;
         }
 
         private static IMapper InitializeTypeMapper()
         {
-            var typeMapConfiguration = TypeMapConfiguration.Initilize();
-            typeMapConfiguration.AssertConfigurationIsValid();
-            return typeMapConfiguration.CreateMapper();
+            return TypeMapper.InitilizeTypeConfiguration().InitializeMapper();
         }
 
         private static object LogErrorToConsole(ICommandLineParserResult parseResult)

@@ -69,7 +69,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="TaxRate.json" />
+    <AdditionalFiles Include="TaxRate.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EmployeeMonthlyPayslipApp.Interfaces\EmployeeMonthlyPayslipApp.Interfaces.csproj">
@@ -83,6 +85,10 @@
     <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeePayDetailsCommon.csproj">
       <Project>{B34815D7-9E11-4F86-A635-C6B1A816C871}</Project>
       <Name>EmployeePayDetailsCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmployeePayDetailsService\EmployeePayDetailsService.csproj">
+      <Project>{62D3BFAD-9FE1-4FA9-A835-ECF7CE722C73}</Project>
+      <Name>EmployeePayDetailsService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -2,9 +2,9 @@
 
 namespace EmployeePayDetailsDomain.Interfaces
 {
-    public interface IEmployee
+    public interface IEmployee :IPerson
     {
         ISalary Salary { get; set; }
-        IEnumerable<ISalarySlip> SalarySlips { get; set; }
+        IList<ISalarySlip> SalarySlips { get; set; }
     }
 }

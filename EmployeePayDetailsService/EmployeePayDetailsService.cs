@@ -1,4 +1,7 @@
-﻿using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
+﻿using AutoMapper;
+using EmployeeMonthlyPayslipApp.Interfaces;
+using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
+using EmployeePayDetailsCommon.TypeMaps;
 using EmployeePayDetailsDomain.Interfaces;
 using EmployeePayDetailsDomain.Models;
 
@@ -6,16 +9,21 @@ namespace EmployeePayDetailsService
 {
     public class EmployeePayDetailsService
     {
-        private readonly ISalary _salary;
+        private readonly IEmployeeDetails _employeeDetails;
+        private readonly IMapper _mapper;
 
-        public EmployeePayDetailsService(ISalary salary)
+        public EmployeePayDetailsService(IEmployeeDetails employeeDetails,IMapper mapper)
         {
-            _salary = salary;
+            _employeeDetails = employeeDetails;
+            _mapper = mapper;
         }
 
-        public ISalarySlip GetPaySlip(ITaxStructure taxStructure)
+        public IPaySlipDetails GetPaySlip(ITaxStructure taxStructure)
         {
-            return SalarySlip.CreateSalarySlip(_salary, taxStructure);
+            var employee = _mapper.Map<IEmployeeDetails, IEmployee>(_employeeDetails);
+            var salarySlip = SalarySlip.CreateSalarySlip(employee.Salary, taxStructure);
+            employee.SalarySlips.Add(salarySlip);
+            return _mapper.Map<IEmployee, IPaySlipDetails>(employee);
         }
     }
 }

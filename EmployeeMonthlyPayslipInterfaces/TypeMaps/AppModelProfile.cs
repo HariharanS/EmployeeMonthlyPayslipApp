@@ -14,9 +14,10 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
     {
         public AppModelProfile()
         {
-            CreateMap<IEmployeeDetails, EmployeeDetails>();
+            CreateMap<IEmployeeDetails, EmployeeDetails>().ReverseMap();
             CreateMap<EmployeeDetailsInput, IEmployeeDetails>()
-                    .ForMember(dest => dest.SuperRate, opt => opt.ResolveUsing<SuperRateResolver>());
+                    .ForMember(dest => dest.SuperRate, opt => opt.ResolveUsing<SuperRateResolver>())
+                    .ReverseMap();
         }
     }
 

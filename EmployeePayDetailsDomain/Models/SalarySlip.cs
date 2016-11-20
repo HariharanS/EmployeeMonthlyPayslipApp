@@ -9,10 +9,9 @@ namespace EmployeePayDetailsDomain.Models
     {
         private readonly ISalary _salary;
         private readonly ITaxStructure _taxStructure;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
         public decimal GrossIncome => Math.Round(_salary.AnnualSalary / 12,0,MidpointRounding.AwayFromZero) ;
         public decimal NetIncome => GrossIncome - IncomeTax;
+        public string TaxPeriod { get; set; }
         public decimal IncomeTax => CalculateIncomeTax();
         public decimal Super => GrossIncome * _salary.SuperRate;
 

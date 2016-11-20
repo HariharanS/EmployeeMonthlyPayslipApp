@@ -3,24 +3,31 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Models.Models;
+using EmployeePayDetailsCommon.TypeMaps;
 
 namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
 {
-    public class TypeMapConfiguration
+    public class TypeMapper
     {
         private static readonly IConfigurationProvider _autoMapperConfiguration;
-        static TypeMapConfiguration()
+        static TypeMapper()
         {
             _autoMapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<AppModelProfile>();
+                cfg.AddProfile<DomainToAppProfile>();
             });
         }
 
-        public static IConfigurationProvider Initilize()
+        public static TypeMapper InitilizeTypeConfiguration()
         {
-            new TypeMapConfiguration();
-            return _autoMapperConfiguration;
+            return new TypeMapper();
+        }
+
+        public IMapper InitializeMapper()
+        {
+            _autoMapperConfiguration.AssertConfigurationIsValid();
+            return _autoMapperConfiguration.CreateMapper();
         }
     }
 }

@@ -10,6 +10,6 @@ namespace EmployeePayDetailsDomain.Models
     public class Employee : Person, IEmployee
     {
         public ISalary Salary { get; set; }
-        public IEnumerable<ISalarySlip> SalarySlips { get; set; }
+        public IList<ISalarySlip> SalarySlips { get; set; }
     }
 }
