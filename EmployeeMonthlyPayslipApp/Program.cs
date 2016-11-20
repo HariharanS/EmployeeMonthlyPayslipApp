@@ -24,8 +24,24 @@ namespace EmployeeMonthlyPayslipApp
         static void Main(string[] args)
         {
             //get input
+            RunEmployeeMonthlyPayslipApplication(args);
+        }
+
+        public static void RunEmployeeMonthlyPayslipApplication(string[] args)
+        {
+            ICommandLineParserResult parseResult;
+            var inputArguments = SetupFluentCommandLineParser(args, out parseResult);
+
+            var applicationResult = parseResult.HasErrors
+                ? LogErrorToConsole(parseResult)
+                : RunApplication(inputArguments.Object);
+        }
+
+        private static FluentCommandLineParser<EmployeeDetailsInput> SetupFluentCommandLineParser(string[] args,
+            out ICommandLineParserResult parseResult)
+        {
             var inputArguments = new FluentCommandLineParser<EmployeeDetailsInput>();
-            
+
             inputArguments.Setup(arg => arg.FirstName)
                 .As('f', "firstname")
                 .Required();
@@ -45,11 +61,10 @@ namespace EmployeeMonthlyPayslipApp
                 .Required();
 
             inputArguments.SetupHelp("h", "help", "?")
-                .Callback(()=> Console.WriteLine());
+                .Callback(() => Console.WriteLine());
 
-            var parseResult = inputArguments.Parse(args);
-
-            var applicationResult = parseResult.HasErrors ? LogErrorToConsole(parseResult) : RunApplication(inputArguments.Object);
+            parseResult = inputArguments.Parse(args);
+            return inputArguments;
         }
 
         private static object RunApplication(EmployeeDetailsInput employeeDetailsInput)
@@ -62,7 +77,7 @@ namespace EmployeeMonthlyPayslipApp
             var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(employeeDetails,mapper);
             var paySlip = employeePayDetailsService.GetPaySlip(taxStructure);
 
-            Console.WriteLine(JsonConvert.SerializeObject(paySlip));
+            Console.WriteLine(JsonConvert.SerializeObject(paySlip,Formatting.Indented));
             return null;
         }
 
@@ -71,7 +86,8 @@ namespace EmployeeMonthlyPayslipApp
             
             var path = AppDomain.CurrentDomain.BaseDirectory;
 
-            var taxJsonFilePath = Path.Combine(path, "TaxRate.json");
+            const string taxJsonFileName = "TaxRate.json";
+            var taxJsonFilePath = Path.Combine(path, taxJsonFileName);
             string fileContent;
             using (var reader = new StreamReader(taxJsonFilePath))
             {

@@ -22,6 +22,7 @@ namespace EmployeePayDetailsService
         {
             var employee = _mapper.Map<IEmployeeDetails, IEmployee>(_employeeDetails);
             var salarySlip = SalarySlip.CreateSalarySlip(employee.Salary, taxStructure);
+            salarySlip.TaxPeriod = _employeeDetails.TaxPeriod;
             employee.SalarySlips.Add(salarySlip);
             return _mapper.Map<IEmployee, IPaySlipDetails>(employee);
         }

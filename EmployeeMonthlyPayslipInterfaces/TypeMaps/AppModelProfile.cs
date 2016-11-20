@@ -37,13 +37,14 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
                 return decimal.Zero;
             }
             decimal super;
-            if (!decimal.TryParse(source.SuperPercentage.Substring(0, source.SuperPercentage.Length - 2), out super))
+            var superPercentageNumber = Regex.Split(source.SuperPercentage, "%").FirstOrDefault(x => !x.Contains("%"));
+            if (!decimal.TryParse(superPercentageNumber, out super))
             {
                 Console.WriteLine("SuperPercentage {0} supplied is not in valid format. It cannot be parsed into a valid decimal number. Setting Super percentage to zero.", source.SuperPercentage);
                 return decimal.Zero;
             }
 
-            return super;
+            return super/100;
         }
     }
 }

@@ -9,17 +9,21 @@ namespace EmployeePayDetailsDomain.Models
     {
         private readonly ISalary _salary;
         private readonly ITaxStructure _taxStructure;
+        private readonly decimal _incomeTax;
         public decimal GrossIncome => Math.Round(_salary.AnnualSalary / 12,0,MidpointRounding.AwayFromZero) ;
         public decimal NetIncome => GrossIncome - IncomeTax;
         public string TaxPeriod { get; set; }
-        public decimal IncomeTax => CalculateIncomeTax();
+        public decimal IncomeTax => _incomeTax;
         public decimal Super => GrossIncome * _salary.SuperRate;
 
         private SalarySlip(ISalary salary, ITaxStructure taxStructure)
         {
             _salary = salary;
             _taxStructure = taxStructure;
+            _incomeTax = CalculateIncomeTax();
         }
+
+        public SalarySlip(){}
 
         public static SalarySlip CreateSalarySlip(ISalary salary,ITaxStructure taxStructure) => new SalarySlip(salary, taxStructure);
 
@@ -30,8 +34,8 @@ namespace EmployeePayDetailsDomain.Models
             var taxSlab = _taxStructure
                             .TaxRate
                             .TaxSlab
-                            .FirstOrDefault(x => x.MinIncome >= _salary.AnnualSalary && 
-                                                x.MaxIncome <= _salary.AnnualSalary);
+                            .FirstOrDefault(x => x.MinIncome <= _salary.AnnualSalary && 
+                                                x.MaxIncome >= _salary.AnnualSalary);
             // check if tax slab is null and throw an exception
             if (taxSlab == null) throw new NullReferenceException("Tax Slab is null");
             // no tax
