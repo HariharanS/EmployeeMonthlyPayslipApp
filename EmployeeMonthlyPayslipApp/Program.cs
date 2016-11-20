@@ -67,8 +67,11 @@ namespace EmployeeMonthlyPayslipApp
             return inputArguments;
         }
 
-        private static object RunApplication(EmployeeDetailsInput employeeDetailsInput)
+        private static IPaySlipDetails RunApplication(EmployeeDetailsInput employeeDetailsInput)
         {
+            Console.WriteLine(
+                "Employee details input : FirstName: {0}, Last Name: {1}, Annual Salary: {2}, Super rate (%): {3}, Payment Period: {4}",
+                employeeDetailsInput.FirstName, employeeDetailsInput.LastName, employeeDetailsInput.AnnualSalary, employeeDetailsInput.SuperPercentage, employeeDetailsInput.TaxPeriod);
             var taxStructure = GetTaxStructure();
             var mapper = InitializeTypeMapper();
             
@@ -77,8 +80,11 @@ namespace EmployeeMonthlyPayslipApp
             var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(employeeDetails,mapper);
             var paySlip = employeePayDetailsService.GetPaySlip(taxStructure);
 
-            Console.WriteLine(JsonConvert.SerializeObject(paySlip,Formatting.Indented));
-            return null;
+            Console.WriteLine(
+                "Employee monthly Pay Slip : FullName: {0},Pay Period: {1}, Gross Income: {2}, Income Tax: {3}, Net Income: {4}, Super: {5}",
+                paySlip.FullName, paySlip.TaxPeriod, paySlip.GrossIncome, paySlip.IncomeTax, paySlip.NetIncome,
+                paySlip.Super);
+            return paySlip;
         }
 
         private static ITaxStructure GetTaxStructure()

@@ -11,10 +11,10 @@ namespace EmployeePayDetailsDomain.Models
         private readonly ITaxStructure _taxStructure;
         private readonly decimal _incomeTax;
         public decimal GrossIncome => Math.Round(_salary.AnnualSalary / 12,0,MidpointRounding.AwayFromZero) ;
-        public decimal NetIncome => GrossIncome - IncomeTax;
+        public decimal NetIncome => Math.Round(GrossIncome - IncomeTax, 0, MidpointRounding.AwayFromZero);
         public string TaxPeriod { get; set; }
         public decimal IncomeTax => _incomeTax;
-        public decimal Super => GrossIncome * _salary.SuperRate;
+        public decimal Super => Math.Round(GrossIncome * _salary.SuperRate, 0, MidpointRounding.AwayFromZero);
 
         private SalarySlip(ISalary salary, ITaxStructure taxStructure)
         {
