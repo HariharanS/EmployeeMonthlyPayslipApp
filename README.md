@@ -11,7 +11,7 @@ Libraries user:
 
 Usage : 
  Download the source code and restore the nuget packages.
- Build the solution using VisualStudio / Msbuild.
+ Build the solution using VisualStudio / MSBuild.
  Run the executable from the built folder "EmployeeMonthlyPayslipApp.exe" in command prompt with appropriate arguments
 
 This is a console application which take following arguments
