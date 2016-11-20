@@ -1,5 +1,5 @@
-﻿using EmployeeMonthlyPayslipInterfaces.Domain;
-using EmployeeMonthlyPayslipInterfaces.TaxStructure;
+﻿using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
+using EmployeePayDetailsDomain.Interfaces;
 using EmployeePayDetailsDomain.Models;
 
 namespace EmployeePayDetailsService

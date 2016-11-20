@@ -1,7 +1,7 @@
-﻿using EmployeeMonthlyPayslipInterfaces.TaxStructure;
-using System;
+﻿using System;
 using System.Linq;
-using EmployeeMonthlyPayslipInterfaces.Domain;
+using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
+using EmployeePayDetailsDomain.Interfaces;
 
 namespace EmployeePayDetailsDomain.Models
 {

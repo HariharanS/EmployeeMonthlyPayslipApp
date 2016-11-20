@@ -1,4 +1,4 @@
-﻿namespace EmployeeMonthlyPayslipInterfaces
+﻿namespace EmployeeMonthlyPayslipApp.Interfaces
 {
     public interface IEmployeeDetails
     {

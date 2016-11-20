@@ -1,4 +1,4 @@
-﻿namespace EmployeeMonthlyPayslipInterfaces.Domain
+﻿namespace EmployeePayDetailsDomain.Interfaces
 {
     public interface ISalary
     {

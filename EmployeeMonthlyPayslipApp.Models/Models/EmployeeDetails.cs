@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EmployeeMonthlyPayslipInterfaces;
+﻿using EmployeeMonthlyPayslipApp.Interfaces;
 
-namespace EmployeeMonthlyPayslipApp.Models
+namespace EmployeeMonthlyPayslipApp.Models.Models
 {
     public class EmployeeDetails : IEmployeeDetails
     {

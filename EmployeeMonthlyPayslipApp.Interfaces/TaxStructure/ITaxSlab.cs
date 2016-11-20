@@ -1,4 +1,4 @@
-﻿namespace EmployeeMonthlyPayslipInterfaces.TaxStructure
+﻿namespace EmployeeMonthlyPayslipApp.Interfaces.TaxStructure
 {
     public interface ITaxSlab
     {

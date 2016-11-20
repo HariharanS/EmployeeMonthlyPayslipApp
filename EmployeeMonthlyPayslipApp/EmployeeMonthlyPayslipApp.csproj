@@ -63,13 +63,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\EmployeeDetails.cs" />
-    <Compile Include="Models\PaySlipDetails.cs" />
-    <Compile Include="Models\TaxStructure\Tax.cs" />
-    <Compile Include="Models\TaxStructure\TaxRate.cs" />
-    <Compile Include="Models\TaxStructure\TaxSlab.cs" />
-    <Compile Include="Models\TaxStructure\TaxSturcture.cs" />
-    <Compile Include="ObjectMaps\MapConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +72,14 @@
     <None Include="TaxRate.json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EmployeeMonthlyPayslipApp.Interfaces\EmployeeMonthlyPayslipApp.Interfaces.csproj">
+      <Project>{CA789F41-677C-4120-8433-AD8A6C5FE43A}</Project>
+      <Name>EmployeeMonthlyPayslipApp.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmployeeMonthlyPayslipApp.Models\EmployeeMonthlyPayslipApp.Models.csproj">
+      <Project>{EDE31BB7-00A2-46B4-B98A-BF3C5D1E7746}</Project>
+      <Name>EmployeeMonthlyPayslipApp.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeePayDetailsCommon.csproj">
       <Project>{B34815D7-9E11-4F86-A635-C6B1A816C871}</Project>
       <Name>EmployeePayDetailsCommon</Name>

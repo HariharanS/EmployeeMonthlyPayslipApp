@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmployeeMonthlyPayslipInterfaces
+﻿namespace EmployeeMonthlyPayslipApp.Interfaces
 {
     public interface IPaySlipDetails
     {

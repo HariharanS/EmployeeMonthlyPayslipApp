@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EmployeeMonthlyPayslipInterfaces.TaxStructure
+namespace EmployeeMonthlyPayslipApp.Interfaces.TaxStructure
 {
     public interface ITaxRate
     {

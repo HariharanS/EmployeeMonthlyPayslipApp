@@ -47,9 +47,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmployeeMonthlyPayslipInterfaces\EmployeePayDetailsCommon.csproj">
-      <Project>{B34815D7-9E11-4F86-A635-C6B1A816C871}</Project>
-      <Name>EmployeePayDetailsCommon</Name>
+    <ProjectReference Include="..\EmployeeMonthlyPayslipApp.Interfaces\EmployeeMonthlyPayslipApp.Interfaces.csproj">
+      <Project>{CA789F41-677C-4120-8433-AD8A6C5FE43A}</Project>
+      <Name>EmployeeMonthlyPayslipApp.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmployeePayDetailsDomain.Interfaces\EmployeePayDetailsDomain.Interfaces.csproj">
+      <Project>{720AF66F-2E91-46CB-A124-CADA003A01C9}</Project>
+      <Name>EmployeePayDetailsDomain.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

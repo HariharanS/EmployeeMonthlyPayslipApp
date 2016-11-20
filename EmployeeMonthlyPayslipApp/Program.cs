@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EmployeeMonthlyPayslipApp.Models;
+using AutoMapper;
+using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipInterfaces;
 using Fclp;
+using EmployeeMonthlyPayslipApp.Models.Models;
+using EmployeeMonthlyPayslipInterfaces.TypeMaps;
 
 namespace EmployeeMonthlyPayslipApp
 {
@@ -44,12 +47,16 @@ namespace EmployeeMonthlyPayslipApp
 
         private static object RunApplication(EmployeeDetailsInput employeeDetailsInput)
         {
-               
+            var mapper = InitializeTypeMapper();
+            var employeeDetails = mapper.Map<EmployeeDetailsInput, IEmployeeDetails>(employeeDetailsInput);
+            return null;
         }
 
-        private void Mapper()
+        private static IMapper InitializeTypeMapper()
         {
-            var mapConfiguration = new MapperConfiguration()
+            var typeMapConfiguration = TypeMapConfiguration.Initilize();
+            typeMapConfiguration.AssertConfigurationIsValid();
+            return typeMapConfiguration.CreateMapper();
         }
 
         private static object LogErrorToConsole(ICommandLineParserResult parseResult)

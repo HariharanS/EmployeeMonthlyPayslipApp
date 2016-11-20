@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using EmployeeMonthlyPayslipInterfaces.TaxStructure;
+﻿using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
 
-namespace EmployeeMonthlyPayslipApp.Models.TaxStructure
+namespace EmployeeMonthlyPayslipApp.Models.Models.TaxStructure
 {
     public class TaxSlab : ITaxSlab
     {
