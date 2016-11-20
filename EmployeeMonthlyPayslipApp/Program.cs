@@ -11,9 +11,11 @@ using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
 using EmployeeMonthlyPayslipInterfaces;
 using Fclp;
 using EmployeeMonthlyPayslipApp.Models.Models;
+using EmployeeMonthlyPayslipApp.Models.Models.TaxStructure;
 using EmployeeMonthlyPayslipInterfaces.TypeMaps;
 using EmployeePayDetailsCommon.TypeMaps;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace EmployeeMonthlyPayslipApp
 {
@@ -52,10 +54,11 @@ namespace EmployeeMonthlyPayslipApp
 
         private static object RunApplication(EmployeeDetailsInput employeeDetailsInput)
         {
+            var taxStructure = GetTaxStructure();
             var mapper = InitializeTypeMapper();
             
             var employeeDetails = mapper.Map<EmployeeDetailsInput, IEmployeeDetails>(employeeDetailsInput);
-            var taxStructure = GetTaxStructure();
+            
             var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(employeeDetails,mapper);
             var paySlip = employeePayDetailsService.GetPaySlip(taxStructure);
 
@@ -65,16 +68,23 @@ namespace EmployeeMonthlyPayslipApp
 
         private static ITaxStructure GetTaxStructure()
         {
-            var path = Assembly.GetExecutingAssembly().Location;
+            
+            var path = AppDomain.CurrentDomain.BaseDirectory;
 
             var taxJsonFilePath = Path.Combine(path, "TaxRate.json");
-            string fileContent = null;
+            string fileContent;
             using (var reader = new StreamReader(taxJsonFilePath))
             {
                 fileContent = reader.ReadToEnd().Trim();
             }
-            var taxStructure = JsonConvert.DeserializeObject<ITaxStructure>(fileContent);
-            return taxStructure;
+            var taxStructureRoot = JsonConvert.DeserializeObject<TaxStructureRoot>(fileContent,new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+
+            taxStructureRoot.taxStructure.TaxRate.TaxSlab.FirstOrDefault(x => x.MaxIncome == decimal.Zero).MaxIncome =
+                decimal.MaxValue;
+            return taxStructureRoot.taxStructure;
         }
 
         private static IMapper InitializeTypeMapper()
