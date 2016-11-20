@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
+using EmployeeMonthlyPayslipApp.Models;
 using EmployeeMonthlyPayslipApp.Models.Models;
 
 namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
@@ -18,6 +19,9 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
             CreateMap<EmployeeDetailsInput, IEmployeeDetails>()
                     .ForMember(dest => dest.SuperRate, opt => opt.ResolveUsing<SuperRateResolver>())
                     .ReverseMap();
+
+            CreateMap<CommandLineInputParameters, EmployeeDetailsInput>();
+            CreateMap<CommandLineInputParameters, CSVParameters>();
         }
     }
 
