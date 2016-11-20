@@ -11,7 +11,7 @@ namespace EmployeeMonthlyPayslipApp.Models.Models
         public decimal SuperRate { get; set; }
     }
 
-    public class EmployeeDetailsInput 
+    public class EmployeeDetailsInput
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmployeePayDetailsDomain.Interfaces
+﻿namespace EmployeePayDetailsDomain.Interfaces
 {
     public interface ISalarySlip
     {

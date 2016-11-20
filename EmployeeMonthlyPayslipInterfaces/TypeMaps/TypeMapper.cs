@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using AutoMapper;
-using EmployeeMonthlyPayslipApp.Interfaces;
-using EmployeeMonthlyPayslipApp.Models.Models;
+﻿using AutoMapper;
 using EmployeePayDetailsCommon.TypeMaps;
 
 namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
@@ -10,6 +6,7 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
     public class TypeMapper
     {
         private static readonly IConfigurationProvider _autoMapperConfiguration;
+
         static TypeMapper()
         {
             _autoMapperConfiguration = new MapperConfiguration(cfg =>

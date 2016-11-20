@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Models.Models;
@@ -25,8 +22,9 @@ namespace EmployeePayDetailsCommon.TypeMaps
             CreateMap<IEmployeeDetails, IEmployee>()
                 .IncludeBase<IEmployeeDetails, IPerson>()
                 //.ForMember(dest => dest.Salary, opt=> opt.MapFrom(src => Mapper.Map<IEmployeeDetails, ISalary>(src)))
-                .ForMember(dest => dest.Salary, opt => opt.MapFrom(src => new Salary {AnnualSalary = src.AnnualSalary,SuperRate = src.SuperRate}))
-                .ForMember(dest => dest.SalarySlips,  opt=> opt.UseValue(new List<SalarySlip>()))
+                .ForMember(dest => dest.Salary,
+                    opt => opt.MapFrom(src => new Salary {AnnualSalary = src.AnnualSalary, SuperRate = src.SuperRate}))
+                .ForMember(dest => dest.SalarySlips, opt => opt.UseValue(new List<SalarySlip>()))
                 .ReverseMap();
 
             // Domain to App
@@ -36,15 +34,19 @@ namespace EmployeePayDetailsCommon.TypeMaps
                 .ForMember(dest => dest.FullName, opt => opt.Ignore())
                 .ReverseMap();
             CreateMap<IEmployee, IPaySlipDetails>()
-                .ForMember(dest => dest.FullName, opt=> opt.MapFrom(src=> src.FirstName.Trim() + " " + src.LastName.Trim()))
-                .ForMember(dest=> dest.GrossIncome, opt=> opt.ResolveUsing(src=> src.SalarySlips.FirstOrDefault().GrossIncome))
-                .ForMember(dest => dest.IncomeTax, opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().IncomeTax))
-                .ForMember(dest => dest.NetIncome, opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().NetIncome))
+                .ForMember(dest => dest.FullName,
+                    opt => opt.MapFrom(src => src.FirstName.Trim() + " " + src.LastName.Trim()))
+                .ForMember(dest => dest.GrossIncome,
+                    opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().GrossIncome))
+                .ForMember(dest => dest.IncomeTax,
+                    opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().IncomeTax))
+                .ForMember(dest => dest.NetIncome,
+                    opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().NetIncome))
                 .ForMember(dest => dest.Super, opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().Super))
-                .ForMember(dest => dest.TaxPeriod, opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().TaxPeriod))
+                .ForMember(dest => dest.TaxPeriod,
+                    opt => opt.ResolveUsing(src => src.SalarySlips.FirstOrDefault().TaxPeriod))
                 .ReverseMap()
                 ;
-
         }
     }
 }

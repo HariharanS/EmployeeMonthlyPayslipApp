@@ -8,6 +8,7 @@ namespace EmployeeMonthlyPayslipApp.Models.Models.TaxStructure
     {
         [JsonConverter(typeof(InterfaceConverter<IEnumerable<ITaxSlab>, List<TaxSlab>>))]
         public IEnumerable<ITaxSlab> TaxSlab { get; set; }
+
         public int TaxYearEnd { get; set; }
         public int TaxYearStart { get; set; }
     }

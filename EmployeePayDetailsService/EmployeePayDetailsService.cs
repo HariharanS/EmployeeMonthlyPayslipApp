@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
-using EmployeePayDetailsCommon.TypeMaps;
 using EmployeePayDetailsDomain.Interfaces;
 using EmployeePayDetailsDomain.Models;
 
@@ -12,7 +11,7 @@ namespace EmployeePayDetailsService
         private readonly IEmployeeDetails _employeeDetails;
         private readonly IMapper _mapper;
 
-        public EmployeePayDetailsService(IEmployeeDetails employeeDetails,IMapper mapper)
+        public EmployeePayDetailsService(IEmployeeDetails employeeDetails, IMapper mapper)
         {
             _employeeDetails = employeeDetails;
             _mapper = mapper;

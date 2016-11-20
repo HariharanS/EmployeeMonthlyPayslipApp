@@ -5,7 +5,7 @@ namespace EmployeeMonthlyPayslipApp.Models.Models.TaxStructure
 {
     public class TaxStructure : ITaxStructure
     {
-        [JsonConverter(typeof(InterfaceConverter<ITaxRate,TaxRate>))]
+        [JsonConverter(typeof(InterfaceConverter<ITaxRate, TaxRate>))]
         public ITaxRate TaxRate { get; set; }
     }
 

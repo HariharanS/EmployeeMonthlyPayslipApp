@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Models;
@@ -17,8 +14,8 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
         {
             CreateMap<IEmployeeDetails, EmployeeDetails>().ReverseMap();
             CreateMap<EmployeeDetailsInput, IEmployeeDetails>()
-                    .ForMember(dest => dest.SuperRate, opt => opt.ResolveUsing<SuperRateResolver>())
-                    .ReverseMap();
+                .ForMember(dest => dest.SuperRate, opt => opt.ResolveUsing<SuperRateResolver>())
+                .ReverseMap();
 
             CreateMap<CommandLineInputParameters, EmployeeDetailsInput>();
             CreateMap<CommandLineInputParameters, CSVParameters>();
@@ -28,7 +25,9 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
     public class SuperRateResolver : IValueResolver<EmployeeDetailsInput, IEmployeeDetails, decimal>
     {
         private const string NUMBERWITHPERCENTAGEVALIDATIONREGEX = @"^\d+[.]?\d*%?$";
-        public decimal Resolve(EmployeeDetailsInput source, IEmployeeDetails destination, decimal destMember, ResolutionContext context)
+
+        public decimal Resolve(EmployeeDetailsInput source, IEmployeeDetails destination, decimal destMember,
+            ResolutionContext context)
         {
             if (source.SuperPercentage == null)
             {
@@ -37,14 +36,18 @@ namespace EmployeeMonthlyPayslipInterfaces.TypeMaps
             }
             if (!Regex.IsMatch(source.SuperPercentage, NUMBERWITHPERCENTAGEVALIDATIONREGEX))
             {
-                Console.WriteLine("SuperPercentage {0} supplied is not in valid format. Setting Super percentage to zero.", source.SuperPercentage);
+                Console.WriteLine(
+                    "SuperPercentage {0} supplied is not in valid format. Setting Super percentage to zero.",
+                    source.SuperPercentage);
                 return decimal.Zero;
             }
             decimal super;
             var superPercentageNumber = Regex.Split(source.SuperPercentage, "%").FirstOrDefault(x => !x.Contains("%"));
             if (!decimal.TryParse(superPercentageNumber, out super))
             {
-                Console.WriteLine("SuperPercentage {0} supplied is not in valid format. It cannot be parsed into a valid decimal number. Setting Super percentage to zero.", source.SuperPercentage);
+                Console.WriteLine(
+                    "SuperPercentage {0} supplied is not in valid format. It cannot be parsed into a valid decimal number. Setting Super percentage to zero.",
+                    source.SuperPercentage);
                 return decimal.Zero;
             }
 
