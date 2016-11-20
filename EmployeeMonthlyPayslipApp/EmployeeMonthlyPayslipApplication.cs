@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AutoMapper;
@@ -8,6 +9,7 @@ using EmployeeMonthlyPayslipApp.Models;
 using EmployeeMonthlyPayslipApp.Models.Models;
 using EmployeeMonthlyPayslipApp.Models.Models.TaxStructure;
 using EmployeeMonthlyPayslipInterfaces.TypeMaps;
+using EmployeePayDetailsCommon;
 using Fclp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,23 +17,35 @@ using Serilog;
 
 namespace EmployeeMonthlyPayslipApp
 {
-    internal class EmployeeMonthlyPayslipApplication
+    public class EmployeeMonthlyPayslipApplication
     {
-        private readonly ILogger _logger;
-        private readonly IMapper _mapper;
-        private readonly ITaxStructure _taxStructure;
+        private ILogger _logger;
+        private IMapper _mapper;
+        private ITaxStructure _taxStructure;
         private CSVParameters _csvParameters;
         private EmployeeDetailsInput _employeeDetailsInput;
-
+        private EmployeeMonthlyPayslipAppContext _employeeMonthlyPayslipAppContext;
         public EmployeeMonthlyPayslipApplication(string[] commandLineArgs)
         {
+            SetupApplication(commandLineArgs);
+        }
+
+        private void SetupApplication(string[] commandLineArgs)
+        {
+            //set up logging
+            _logger = LogSetup();
+            _employeeMonthlyPayslipAppContext = new EmployeeMonthlyPayslipAppContext(_logger);
             ICommandLineParserResult parseResult;
             var inputArguments = SetupFluentCommandLineParser(commandLineArgs, out parseResult);
-            _logger = LogSetup();
+            // set up type mapper
             _mapper = InitializeTypeMapper();
-            ExtractCommandLineParametersIntoObject(parseResult, inputArguments);
+            // initialize error object
 
+            // parse command line parameters into strongly typed objects
+            ExtractCommandLineParametersIntoObject(parseResult, inputArguments);
+            // load tax structure
             _taxStructure = LoadTaxStructure();
+
         }
 
         public IPaySlipDetails RunApplication()
@@ -40,12 +54,16 @@ namespace EmployeeMonthlyPayslipApp
                 "Employee details input : FirstName: {0}, Last Name: {1}, Annual Salary: {2}, Super rate (%): {3}, Payment Period: {4}",
                 _employeeDetailsInput.FirstName, _employeeDetailsInput.LastName, _employeeDetailsInput.AnnualSalary,
                 _employeeDetailsInput.SuperPercentage, _employeeDetailsInput.TaxPeriod);
-
             var employeeDetails = _mapper.Map<EmployeeDetailsInput, IEmployeeDetails>(_employeeDetailsInput);
 
-            var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(employeeDetails,
+            var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(_employeeMonthlyPayslipAppContext,employeeDetails,
                 _mapper);
             var paySlip = employeePayDetailsService.GetPaySlip(_taxStructure);
+            if (_employeeMonthlyPayslipAppContext.HasErrors)
+            {
+                _employeeMonthlyPayslipAppContext.LogErrors();
+                return paySlip;
+            }
 
             _logger.Information(
                 "Employee monthly Pay Slip : FullName: {0},Pay Period: {1}, Gross Income: {2}, Income Tax: {3}, Net Income: {4}, Super: {5}",
@@ -63,16 +81,24 @@ namespace EmployeeMonthlyPayslipApp
             if (commandLineInputParameters.IsInputInCSVFormat)
                 _csvParameters = _mapper.Map<CSVParameters>(commandLineInputParameters);
             _employeeDetailsInput = _mapper.Map<EmployeeDetailsInput>(commandLineInputParameters);
-            ;
         }
 
         private static ILogger LogSetup()
         {
-            var logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.ColoredConsole(
-                    outputTemplate: "{Timestamp:HH:mm} [{Level}] ({ThreadId}) {Message}{NewLine}{Exception}")
-                .CreateLogger();
+            ILogger logger;
+            try
+            {
+                logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    .WriteTo.ColoredConsole(
+                        outputTemplate: "{Timestamp:HH:mm} [{Level}] ({ThreadId}) {Message}{NewLine}{Exception}")
+                    .CreateLogger();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occured while setting up logger. Error Message {0}, Target Site {1}, Stack Trace {2}",ex.Message,ex.TargetSite.Name,ex.StackTrace);
+                throw;
+            }
 
             return logger;
         }
