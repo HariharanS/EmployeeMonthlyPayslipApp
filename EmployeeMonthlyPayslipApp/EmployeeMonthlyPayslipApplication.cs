@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using AutoMapper;
 using CsvHelper;
+using CsvHelper.Configuration;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
 using EmployeeMonthlyPayslipApp.Models;
@@ -28,6 +30,7 @@ namespace EmployeeMonthlyPayslipApp
         private EmployeeDetailsInput _employeeDetailsInput;
         private EmployeeMonthlyPayslipAppContext _employeeMonthlyPayslipAppContext;
         private CommandLineInputParameters _commandLineInputParameters;
+        public EmployeeMonthlyPayslipAppContext EmployeeMonthlyPayslipAppContext => _employeeMonthlyPayslipAppContext;
         public EmployeeMonthlyPayslipApplication(string[] commandLineArgs)
         {
             SetupApplication(commandLineArgs);
@@ -39,6 +42,14 @@ namespace EmployeeMonthlyPayslipApp
 
             ICommandLineParserResult parseResult;
             var inputArguments = SetupFluentCommandLineParser(commandLineArgs, out parseResult);
+
+            if (parseResult.HasErrors)
+            {
+                _employeeMonthlyPayslipAppContext.AddError(
+                       new EmployeeMonthlyPayslipAppError("EmployeeMonthlyPayslipApplication:ExtractCommandLineParametersIntoObject",
+                       new EmployeeMonthlyPayslipAppException("Error occured while parsing command line arguments", new Exception(parseResult.ErrorText)))
+                   );
+            }
 
             // parse command line parameters into strongly typed objects
             ExtractCommandLineParametersIntoObject(parseResult, inputArguments);
@@ -61,15 +72,31 @@ namespace EmployeeMonthlyPayslipApp
             IList < IPaySlipDetails > paySlips = new List<IPaySlipDetails>();
             if (_commandLineInputParameters.IsInputInCSVFormat)
             {
-                var csv = new CsvReader(new StreamReader(_csvParameters.InputCSVFilePath));
-                csv.Configuration.HasHeaderRecord = true;
-                var records = csv.GetRecords<EmployeeDetailsInput>().ToList();
+                IList<EmployeeDetailsInput> records = null;
+                using (var reader = new StreamReader(_csvParameters.InputCSVFilePath))
+                using (var csv = new CsvReader(reader))
+                {
+
+                    csv.Configuration.HasHeaderRecord = true;
+                    records = csv.GetRecords<EmployeeDetailsInput>().ToList();
+                }
+                
                 records.ForEach(input =>
                 {
                     var paySlipDetail = GetPaySlipDetails(input);
                     if (paySlipDetail != null) paySlips.Add(paySlipDetail);
                 });
 
+                using (var writer = new StreamWriter(Path.Combine(_csvParameters.OutputCSVDirectory, "OutputCsv.csv")))
+                using (var csvWriter = new CsvWriter(writer))
+                {
+                    //csvWriter.Configuration.RegisterClassMap<PaySlipDetailsMap>();
+                    //csvWriter.WriteHeader<IPaySlipDetails>();
+                    csvWriter.Configuration.AutoMap<PaySlipDetailsMap>();
+                    csvWriter.WriteRecords(paySlips);
+                };
+                
+                
                 return paySlips;
             }
             var paySlip = GetPaySlipDetails();
@@ -109,8 +136,6 @@ namespace EmployeeMonthlyPayslipApp
         private void ExtractCommandLineParametersIntoObject(ICommandLineParserResult parseResult,
             IFluentCommandLineParser<CommandLineInputParameters> inputArguments)
         {
-            if (parseResult.HasErrors)
-                _logger.Error(parseResult.ErrorText);
             _commandLineInputParameters = inputArguments.Object;
             if (_commandLineInputParameters.IsInputInCSVFormat)
                 _csvParameters = _mapper.Map<CSVParameters>(_commandLineInputParameters);

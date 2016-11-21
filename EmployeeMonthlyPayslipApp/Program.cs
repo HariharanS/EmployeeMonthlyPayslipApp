@@ -5,7 +5,11 @@
         private static void Main(string[] args)
         {
             var employeeMonthlyPayslipApplication = new EmployeeMonthlyPayslipApplication(args);
-            employeeMonthlyPayslipApplication.RunApplication();
+            if (!employeeMonthlyPayslipApplication.EmployeeMonthlyPayslipAppContext.HasErrors)
+            {
+                employeeMonthlyPayslipApplication.RunApplication();
+            }
+            
         }
     }
 }
