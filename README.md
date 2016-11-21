@@ -20,7 +20,7 @@ This is a console application which take following arguments
 ```
 EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
 ```
-or *csv file input*
+or *csv file input* (coming soon)
 ```
  EmployeeMonthlyPayslipApp -c=true -i=<csv file path> -o=<output directory>
 ```
