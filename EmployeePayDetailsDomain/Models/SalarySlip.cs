@@ -43,7 +43,7 @@ namespace EmployeePayDetailsDomain.Models
             // check if tax slab is null and throw an exception
             if (taxSlab == null) throw new NullReferenceException("Tax Slab is null");
             // no tax
-            if (taxSlab.Tax == null)
+            if (taxSlab.Tax == null || (taxSlab.Tax.AdditionalTaxPercentageOverMinIncome == null && taxSlab.Tax.FlatTax==null))
                 return incomeTax;
             //get tax structure
             var tax = taxSlab.Tax;

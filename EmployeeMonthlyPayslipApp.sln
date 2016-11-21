@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeMonthlyPayslipApp", "EmployeeMonthlyPayslipApp\EmployeeMonthlyPayslipApp.csproj", "{E1510E9B-7A44-4D41-ACA3-95689DABE307}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeMonthlyPayslipApp.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeePayDetailsDomain.Interfaces", "EmployeePayDetailsDomain.Interfaces\EmployeePayDetailsDomain.Interfaces.csproj", "{720AF66F-2E91-46CB-A124-CADA003A01C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeMonthlyPayslipApp.Testing", "EmployeeMonthlyPayslipApp.Testing\EmployeeMonthlyPayslipApp.Testing.csproj", "{39128CE0-C103-472E-945B-B2153728FF08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeMonthlyPayslipApp.Testing", "EmployeeMonthlyPayslipApp.Testing\EmployeeMonthlyPayslipApp.Testing.csproj", "{287D93F3-59D8-4BA8-A520-1B054AA10379}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{720AF66F-2E91-46CB-A124-CADA003A01C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{720AF66F-2E91-46CB-A124-CADA003A01C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{720AF66F-2E91-46CB-A124-CADA003A01C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39128CE0-C103-472E-945B-B2153728FF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39128CE0-C103-472E-945B-B2153728FF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39128CE0-C103-472E-945B-B2153728FF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39128CE0-C103-472E-945B-B2153728FF08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287D93F3-59D8-4BA8-A520-1B054AA10379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287D93F3-59D8-4BA8-A520-1B054AA10379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287D93F3-59D8-4BA8-A520-1B054AA10379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287D93F3-59D8-4BA8-A520-1B054AA10379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
