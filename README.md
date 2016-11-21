@@ -15,10 +15,10 @@ Usage :
  Run the executable from the built folder "EmployeeMonthlyPayslipApp.exe" in command prompt with appropriate arguments
 
 This is a console application which take following arguments
-'''
+```
  EmployeeMonthlyPayslipApp -f=Hariharan -l=S -a=80000 -s=9% -p="1 March - 31 March"
-'''
+```
  or
- '''
+ ```
  EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
- '''
+ ```
