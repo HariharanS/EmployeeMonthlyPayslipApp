@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AutoMapper;
+using CsvHelper;
 using EmployeeMonthlyPayslipApp.Interfaces;
 using EmployeeMonthlyPayslipApp.Interfaces.TaxStructure;
 using EmployeeMonthlyPayslipApp.Models;
@@ -11,6 +12,7 @@ using EmployeeMonthlyPayslipApp.Models.Models.TaxStructure;
 using EmployeeMonthlyPayslipInterfaces.TypeMaps;
 using EmployeePayDetailsCommon;
 using Fclp;
+using Fclp.Internals.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;
@@ -25,6 +27,7 @@ namespace EmployeeMonthlyPayslipApp
         private CSVParameters _csvParameters;
         private EmployeeDetailsInput _employeeDetailsInput;
         private EmployeeMonthlyPayslipAppContext _employeeMonthlyPayslipAppContext;
+        private CommandLineInputParameters _commandLineInputParameters;
         public EmployeeMonthlyPayslipApplication(string[] commandLineArgs)
         {
             SetupApplication(commandLineArgs);
@@ -32,32 +35,63 @@ namespace EmployeeMonthlyPayslipApp
 
         private void SetupApplication(string[] commandLineArgs)
         {
-            //set up logging
-            _logger = LogSetup();
-            _employeeMonthlyPayslipAppContext = new EmployeeMonthlyPayslipAppContext(_logger);
+            SetupCommonComponents();
+
             ICommandLineParserResult parseResult;
             var inputArguments = SetupFluentCommandLineParser(commandLineArgs, out parseResult);
-            // set up type mapper
-            _mapper = InitializeTypeMapper();
-            // initialize error object
 
             // parse command line parameters into strongly typed objects
             ExtractCommandLineParametersIntoObject(parseResult, inputArguments);
-            // load tax structure
-            _taxStructure = LoadTaxStructure();
 
         }
 
-        public IPaySlipDetails RunApplication()
+        private void SetupCommonComponents()
         {
+//set up logging
+            _logger = LogSetup();
+            _employeeMonthlyPayslipAppContext = new EmployeeMonthlyPayslipAppContext(_logger);
+            // set up type mapper
+            _mapper = InitializeTypeMapper();
+            // load tax structure
+            _taxStructure = LoadTaxStructure();
+        }
+
+        public IEnumerable<IPaySlipDetails> RunApplication()
+        {
+            IList < IPaySlipDetails > paySlips = new List<IPaySlipDetails>();
+            if (_commandLineInputParameters.IsInputInCSVFormat)
+            {
+                var csv = new CsvReader(new StreamReader(_csvParameters.InputCSVFilePath));
+                csv.Configuration.HasHeaderRecord = true;
+                var records = csv.GetRecords<EmployeeDetailsInput>().ToList();
+                records.ForEach(input =>
+                {
+                    var paySlipDetail = GetPaySlipDetails(input);
+                    if (paySlipDetail != null) paySlips.Add(paySlipDetail);
+                });
+
+                return paySlips;
+            }
+            var paySlip = GetPaySlipDetails();
+            if (paySlip != null) paySlips.Add(paySlip);
+            return paySlips;
+        }
+
+        private IPaySlipDetails GetPaySlipDetails(EmployeeDetailsInput employeeDetailsInput =null)
+        {
+            if (employeeDetailsInput != null)
+            {
+                _employeeDetailsInput = employeeDetailsInput;
+            }
             _logger.Information(
                 "Employee details input : FirstName: {0}, Last Name: {1}, Annual Salary: {2}, Super rate (%): {3}, Payment Period: {4}",
                 _employeeDetailsInput.FirstName, _employeeDetailsInput.LastName, _employeeDetailsInput.AnnualSalary,
                 _employeeDetailsInput.SuperPercentage, _employeeDetailsInput.TaxPeriod);
             var employeeDetails = _mapper.Map<EmployeeDetailsInput, IEmployeeDetails>(_employeeDetailsInput);
 
-            var employeePayDetailsService = new EmployeePayDetailsService.EmployeePayDetailsService(_employeeMonthlyPayslipAppContext,employeeDetails,
-                _mapper);
+            var employeePayDetailsService =
+                new EmployeePayDetailsService.EmployeePayDetailsService(_employeeMonthlyPayslipAppContext, employeeDetails,
+                    _mapper);
             var paySlip = employeePayDetailsService.GetPaySlip(_taxStructure);
             if (_employeeMonthlyPayslipAppContext.HasErrors)
             {
@@ -77,10 +111,10 @@ namespace EmployeeMonthlyPayslipApp
         {
             if (parseResult.HasErrors)
                 _logger.Error(parseResult.ErrorText);
-            var commandLineInputParameters = inputArguments.Object;
-            if (commandLineInputParameters.IsInputInCSVFormat)
-                _csvParameters = _mapper.Map<CSVParameters>(commandLineInputParameters);
-            _employeeDetailsInput = _mapper.Map<EmployeeDetailsInput>(commandLineInputParameters);
+            _commandLineInputParameters = inputArguments.Object;
+            if (_commandLineInputParameters.IsInputInCSVFormat)
+                _csvParameters = _mapper.Map<CSVParameters>(_commandLineInputParameters);
+            _employeeDetailsInput = _mapper.Map<EmployeeDetailsInput>(_commandLineInputParameters);
         }
 
         private static ILogger LogSetup()
@@ -121,8 +155,8 @@ namespace EmployeeMonthlyPayslipApp
                 .As('p', "taxperiod")
                 .WithDescription("Enter monthly tax period that should appear on the pay slip. ");
 
-            inputArguments.Setup(arg => arg.TaxPeriod)
-                .As("IsInputCSV")
+            inputArguments.Setup(arg => arg.IsInputInCSVFormat)
+                .As('c',"isinputcsv")
                 .WithDescription(
                     "If the input is a csv file set this to true, if the put is a command line input set this to false ");
 
