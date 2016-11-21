@@ -17,6 +17,10 @@ This is a console application which take following arguments
  EmployeeMonthlyPayslipApp -f=Hariharan -l=S -a=80000 -s=9% -p="1 March - 31 March"
 ```
  or
- ```
- EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
- ```
+```
+EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
+```
+or *csv file input*
+```
+ EmployeeMonthlyPayslipApp -c=true -i=<csv file path> -o=<output directory>
+```
