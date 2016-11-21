@@ -1,15 +1,13 @@
 # EmployeeMonthlyPayslipApp
 Code Challenge
 
-Details: This application takes in Employee details, annualr salary, super rate and tax period information and 
-calculates the monthly income of the employee along with the income tax, super etc. It is a designed in a layered architecture to demonstate
-the application of basic software design principles.
-Libraries user: 
+- *Details :* This application takes in Employee details, annualr salary, super rate and tax period information and calculates the monthly income of the employee along with the income tax, super etc. It is a designed in a layered architecture to demonstate the application of basic software design principles.
+- *Libraries used :* 
  - Automapper
  - FluentCommandLineParser
  - Newtonson.Json
 
-Usage : 
+- *Usage :* 
  Download the source code and restore the nuget packages.
  Build the solution using VisualStudio / MSBuild.
  Run the executable from the built folder "EmployeeMonthlyPayslipApp.exe" in command prompt with appropriate arguments
