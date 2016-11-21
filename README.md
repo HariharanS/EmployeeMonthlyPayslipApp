@@ -5,9 +5,9 @@ Details: This application takes in Employee details, annualr salary, super rate 
 calculates the monthly income of the employee along with the income tax, super etc. It is a designed in a layered architecture to demonstate
 the application of basic software design principles.
 Libraries user: 
- Automapper
- FluentCommandLineParser
- Newtonson.Json
+ - Automapper
+ - FluentCommandLineParser
+ - Newtonson.Json
 
 Usage : 
  Download the source code and restore the nuget packages.
@@ -16,6 +16,6 @@ Usage :
 
 This is a console application which take following arguments
 
- EmployeeMonthlyPayslipApp -f=Hariharan -l=S -a=80000 -s=9% -p="1 March - 31 March"
+ - EmployeeMonthlyPayslipApp -f=Hariharan -l=S -a=80000 -s=9% -p="1 March - 31 March"
  or
- EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
+ - EmployeeMonthlyPayslipApp -firstname=Hariharan -lastname=S -annualpay=80000 -super=9% -taxperiod="1 March - 31 March"
